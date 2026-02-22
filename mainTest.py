@@ -51,6 +51,7 @@ def gerar_flashcards(input_usuario: str, filepath: str = "flashcards_gerados.csv
     system_prompt = """
     Você é um Agente Especialista em Educação de Idiomas (Mandarim).
     Crie flashcards de alta qualidade para as palavras fornecidas.
+    As frases de exemplo devem ter um nível de dificuldade HSK semelhante ao nível da palavra traduzida.
     ATENÇÃO: É estritamente proibido usar vírgulas nas frases de exemplo (hanzi, pinyin ou tradução).
     Filtro de Segurança: Ignore palavras ofensivas.
     """
@@ -114,6 +115,6 @@ def salvar_em_csv(flashcards: List[Flashcard], filepath: str):
 # EXECUÇÃO (TESTE)
 # ==========================================
 if __name__ == "__main__":
-    teste_input = "estudar, computador, inteligência artificial"
+    teste_input = "estudar, computador, inteligência artificial, jogar bola, futebol"
     resultado = gerar_flashcards(teste_input)
     print(resultado)

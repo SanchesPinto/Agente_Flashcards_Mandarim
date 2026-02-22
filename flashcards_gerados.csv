@@ -1,4 +1,6 @@
-ID_Unico,Hanzi,Pinyin,Tradução_PT,Classe_Gramatical,Frase_Exemplo_Hanzi,Frase_Exemplo_Pinyin,Frase_Exemplo_Tradução,Tags
-CARD-01,学习,xuéxí,estudar,v.,我每天学习汉语,Wǒ měitiān xuéxí hànyǔ,Eu estudo chinês todos os dias,HSK1
-CARD-02,电脑,diànnǎo,computador,n.,我的电脑很快,Wǒ de diànnǎo hěn kuài,Meu computador é rápido,HSK1
-CARD-03,人工智能,rén gōng zhì néng,inteligência artificial,n.,人工智能正在改变世界,Rén gōng zhì néng zhèng zài gǎi biàn shì jiè,A inteligência artificial está mudando o mundo,HSK2
+
+CARD-01,学习,xuéxí,estudar,v.,我每天都学习汉语,Wǒ měitiān dōu xuéxí hànyǔ,Eu estudo chinês todos os dias,HSK2
+CARD-02,电脑,diànnǎo,computador,n.,我在用电脑做作业,Wǒ zài yòng diànnǎo zuò zuòyè,Eu estou usando o computador para fazer o dever de casa,HSK2
+CARD-03,人工智能,rén gōng zhì néng,inteligência artificial,n.,人工智能正在改变我们的生活,Rén gōng zhì néng zhèng zài gǎi biàn wǒ men de shēng huó,A inteligência artificial está mudando nossas vidas,HSK3
+CARD-04,踢球,tī qiú,jogar bola,v.,他们喜欢在公园踢球,Tā men xǐ huān zài gōng yuán tī qiú,Eles gostam de jogar bola no parque,HSK2
+CARD-05,足球,zú qiú,futebol,n.,足球是我最喜欢的运动,Zú qiú shì wǒ zuì xǐ huān de yùn dòng,Futebol é o meu esporte favorito,HSK2
