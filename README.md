@@ -1,7 +1,9 @@
 # Agente_Flashcards_Mandarim
 
-🚀 Status do Projeto: Agente de IA para Flashcards de Mandarim
+## PRIMEIRO DE TUDO VALE DESTACAR QUE É MUITO IMPORTANTE CRITICAR ESSE PLANO!!!
+## QUERO VER A PRÁTICA DOS CONFLITOS PRODUTIVOS!!!
 
+🚀 Status do Projeto: Agente de IA para Flashcards de Mandarim
 
 
 🎯 Onde estamos agora: MVP Concluído 
@@ -24,6 +26,6 @@ Agora que o texto e o CSV estão sólidos, vamos adicionar mídia aos cards:
 
     Pipeline de Áudio (Hugging Face + FastAPI): Para gerar o áudio nativo em mandarim das palavras e frases, usaremos um modelo Open Source do Hugging Face. Para não depender da internet e fugir de limites gratuitos, a ideia é rodar esse modelo localmente, envelopado em uma API própria usando FastAPI. (Essa parte ainda está sujeita a muitas mudanças, tenho minhas dúvidas se essa é a melhor abordagem)
 
-🔮 Visão de Futuro (Fase 3)
+🔮 Futuro do projeto?
 
     Orquestração com n8n: Quando os scripts em Python (LLM, Imagens e a API local de Áudio) estiverem validados, vamos migrar o fluxo visual para o n8n. Isso vai criar uma interface muito mais amigável para o usuário final, orquestrando todas essas chamadas de forma automatizada. Minha ideia de implementar em n8n é para que futuramente fique mais fácil de tornar esse projeto um assistente em mais línguas além do mandarim.
