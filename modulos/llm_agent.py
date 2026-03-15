@@ -32,6 +32,12 @@ def gerar_flashcards_json(input_usuario: str) -> List[dict]:
         raise ValueError("Nenhuma palavra identificada no input.")
     if qtd_palavras > 10:
         raise ValueError(f"Limite excedido. Você enviou {qtd_palavras} palavras. O máximo é 10.")
+
+    # Limite de caracteres por palavra (ex: 20 caracteres)
+    LIMITE_CARACTERES = 20
+    for palavra in palavras:
+        if len(palavra) > LIMITE_CARACTERES:
+            raise ValueError(f"A palavra '{palavra}' excede o limite de {LIMITE_CARACTERES} caracteres. Por favor, insira apenas uma palavra ou termo curto por campo.")
     
     input_limpo = ", ".join(palavras)
     print(f"[LLM] Processando {qtd_palavras} palavra(s) via OpenAI...")
