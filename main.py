@@ -2,8 +2,9 @@ import os
 import requests
 from modulos.llm_agent import gerar_flashcards_json
 from modulos.gerador_apkg import criar_baralho_apkg
+from modulos.gerador_audio import gerar_audio_local # <-- Nosso novo módulo!
 
-PEXELS_API_KEY = os.getenv("PEXELS_API_KEY")
+PEXELS_API_KEY = os.getenv("PEXELS_API_KEY", "SUA_CHAVE_AQUI")
 
 def baixar_imagem_pexels(termo_busca, id_unico):
     print(f"  -> [Imagem] Buscando: {termo_busca}")
@@ -24,22 +25,6 @@ def baixar_imagem_pexels(termo_busca, id_unico):
         print(f"  -> [Erro Imagem]: {e}")
     return None, None
 
-def solicitar_audio_api_local(texto_mandarim, nome_arquivo_base):
-    print(f"  -> [Áudio] Gerando para: {texto_mandarim}")
-    try:
-        resposta = requests.post(
-            "http://127.0.0.1:8000/gerar-audio", 
-            json={"texto_mandarim": texto_mandarim}
-        )
-        if resposta.status_code == 200:
-            nome_arquivo = f"{nome_arquivo_base}.mp3"
-            caminho = os.path.join("media_temp", nome_arquivo)
-            with open(caminho, "wb") as f: f.write(resposta.content)
-            return caminho, nome_arquivo
-    except Exception as e:
-        print(f"  -> [Erro Áudio]: {e}")
-    return None, None
-
 def pipeline_principal(input_usuario: str):
     os.makedirs("media_temp", exist_ok=True)
     
@@ -55,13 +40,13 @@ def pipeline_principal(input_usuario: str):
             card['caminho_imagem'] = cam_img
             card['nome_imagem'] = nom_img
             
-            # 2. Áudio da Palavra Isolada
-            cam_aud_palavra, nom_aud_palavra = solicitar_audio_api_local(card['hanzi'], card['id_unico'])
+            # 2. Áudio da Palavra (Agora usando o módulo direto)
+            cam_aud_palavra, nom_aud_palavra = gerar_audio_local(card['hanzi'], card['id_unico'])
             card['caminho_audio_palavra'] = cam_aud_palavra
             card['nome_audio_palavra'] = nom_aud_palavra
 
-            # 3. Áudio da Frase de Exemplo (Usando o sufixo _frase)
-            cam_aud_frase, nom_aud_frase = solicitar_audio_api_local(card['frase_exemplo_hanzi'], f"{card['id_unico']}_frase")
+            # 3. Áudio da Frase (Usando o sufixo _frase)
+            cam_aud_frase, nom_aud_frase = gerar_audio_local(card['frase_exemplo_hanzi'], f"{card['id_unico']}_frase")
             card['caminho_audio_frase'] = cam_aud_frase
             card['nome_audio_frase'] = nom_aud_frase
 
@@ -72,5 +57,5 @@ def pipeline_principal(input_usuario: str):
         print(f"\n=== ERRO ===\n{e}\n")
 
 if __name__ == "__main__":
-    lista_teste = "saber, dinheiro"
+    lista_teste = "livro, mesa"
     pipeline_principal(lista_teste)
