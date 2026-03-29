@@ -1,31 +1,88 @@
-# Agente_Flashcards_Mandarim
+Markdown
 
-## PRIMEIRO DE TUDO VALE DESTACAR QUE É MUITO IMPORTANTE CRITICAR ESSE PLANO!!!
-## QUERO VER A PRÁTICA DOS CONFLITOS PRODUTIVOS!!!
+# 🇨🇳 Agente IA: Gerador de Flashcards de Mandarim
 
-🚀 Status do Projeto: Agente de IA para Flashcards de Mandarim
+Um pipeline automatizado e multimodal para criação de flashcards de mandarim focados no Anki. Este projeto recebe uma lista de vocabulário em linguagem natural e utiliza Inteligência Artificial para gerar traduções contextuais, buscar imagens representativas, sintetizar áudio nativo e empacotar tudo em um arquivo `.apkg` pronto para importação.
+
+## ✨ Arquitetura e Features
+
+O projeto foi construído utilizando uma arquitetura modular, onde cada etapa do pipeline é tratada por um serviço especialista:
+
+* **🧠 LLM Agent (OpenAI):** Utiliza o modelo `gpt-4o-mini` com *Structured Outputs* (via Pydantic) para garantir a integridade dos dados. Gera Hanzi, Pinyin, traduções focadas no aprendizado, frases de exemplo e define tags baseadas no nível HSK.
+* **🖼️ Visão (Pexels API):** O LLM gera termos de busca otimizados em inglês, que são enviados à API do Pexels para capturar imagens contextuais gratuitas e de alta qualidade.
+* **🗣️ Voz Nativa (Edge-TTS):** Utiliza a infraestrutura de nuvem da Microsoft (Edge TTS) de forma assíncrona para gerar áudios neurais ultrarrealistas (Voz: *Xiaoxiao*), separando os áudios da palavra isolada e da frase de exemplo.
+* **📦 Empacotamento (Genanki):** Aplica o *Princípio da Informação Mínima*. A partir de 1 palavra, o sistema gera múltiplos cartões interligados (Leitura, Audição, Visual, Tradução Reversa e Contexto), compilando tudo em um arquivo `.apkg` nativo do Anki.
+
+## 🛠️ Pré-requisitos e Instalação
+
+Certifique-se de ter o Python 3.8+ instalado.
+
+1. Clone o repositório:
+
+```bash
+
+git clone [https://github.com/seu-usuario/nome-do-repo.git](https://github.com/seu-usuario/nome-do-repo.git)
+cd nome-do-
+
+```
 
 
-🎯 Onde estamos agora: MVP Concluído 
-Até o momento, construímos o "motor principal" do agente. Ele recebe uma lista de vocabulário e devolve um arquivo .csv perfeitamente formatado para o Anki.
-O que já foi implementado no nosso backend em Python:
-
-    Validação de Input (Hard Logic): Criamos uma trava de segurança no código que bloqueia requisições com mais de 10 palavras. Isso evita estourar custos da API caso haja uso indevido.
-
-    Prompt Engineering Estruturado: O Agente de IA tem uma persona definida e regras rígidas (ex: tradução focada no aprendizado, filtro contra palavras ofensivas e proibição de vírgulas nas frases de exemplo para não quebrar o CSV).
-
-    OpenAI Structured Outputs (Pydantic): Em vez de torcer para a IA não errar a formatação do texto, nós a obrigamos a preencher um schema de dados (JSON) tipado. O nosso script Python pega esse JSON e converte para CSV. Isso garante 100% de estabilidade no arquivo gerado.
+2. Instale as dependências:
 
 
-🚧 Próximos Passos: Enriquecimento Multimídia 
-Agora que o texto e o CSV estão sólidos, vamos adicionar mídia aos cards:
+```bash
+pip install openai pydantic requests edge-tts genanki
 
-    Geração de Termos de Busca: O LLM precisa ser configurado configurado para traduzir a palavra para o inglês e sugerir o melhor termo de busca para a futura etapa de imagens. 
+```
 
-    Pipeline de Imagens (Integração Pexels API): Vamos usar a API gratuita do Pexels. O script vai pegar aquele "termo de busca em inglês" gerado pelo LLM, buscar a melhor foto, fazer o download para uma pasta local (media_anki) e inserir a tag HTML correta (<img src="...">) no CSV.
+3. Configure suas variáveis de ambiente. Crie um arquivo .env na raiz do projeto ou exporte no seu terminal:
 
-    Pipeline de Áudio (Hugging Face + FastAPI): Para gerar o áudio nativo em mandarim das palavras e frases, usaremos um modelo Open Source do Hugging Face. Para não depender da internet e fugir de limites gratuitos, a ideia é rodar esse modelo localmente, envelopado em uma API própria usando FastAPI. (Essa parte ainda está sujeita a muitas mudanças, tenho minhas dúvidas se essa é a melhor abordagem)
+```bash
+export OPENAI_API_KEY="sk-sua-chave-openai"
+export PEXELS_API_KEY="sua-chave-pexels"
+```
 
-🔮 Futuro do projeto?
+📂 Estrutura do Projeto
 
-    Orquestração com n8n: Quando os scripts em Python (LLM, Imagens e a API local de Áudio) estiverem validados, vamos migrar o fluxo visual para o n8n. Isso vai criar uma interface muito mais amigável para o usuário final, orquestrando todas essas chamadas de forma automatizada. Minha ideia de implementar em n8n é para que futuramente fique mais fácil de tornar esse projeto um assistente em mais línguas além do mandarim.
+A lógica principal foi separada em módulos para facilitar o trabalho em equipe e evitar conflitos:
+
+```bash
+/
+├── main.py                   # Orquestrador do pipeline
+├── modulos/                  
+│   ├── __init__.py
+│   ├── llm_agent.py          # Integração OpenAI e validação Pydantic
+│   ├── gerador_audio.py      # Microsserviço assíncrono do Edge-TTS
+│   └── gerador_apkg.py       # Templates HTML/CSS e lógica do Genanki
+└── media_temp/               # Pasta de debug (armazena mídias temporárias)
+```
+
+🚀 Como Usar
+
+    Abra o arquivo main.py.
+
+    Edite a variável lista_teste com o vocabulário que deseja estudar (máximo de 10 palavras por lote para segurança da API):
+
+Python
+
+lista_teste = "saber, comprar, dinheiro, restaurante"
+
+    Execute o orquestrador:
+
+
+python main.py
+
+    O console exibirá o progresso de cada etapa (IA -> Imagem -> Áudios -> Genanki).
+
+    Ao finalizar, dê um clique duplo no arquivo Meus_Flashcards_Mandarim.apkg gerado na raiz do projeto para abrir diretamente no Anki!
+
+⚠️ Notas de Desenvolvimento
+
+    Hard Limits: Há uma trava de segurança no llm_agent.py que recusa processar mais de 10 palavras por vez para evitar custos acidentais de API.
+
+    Filtro de Conteúdo: O prompt do sistema está configurado para recusar termos ofensivos ou desrespeitosos.
+
+    Debug Visual: Os arquivos de áudio (.mp3) e imagem (.jpg) permanecem salvos na pasta media_temp após a execução. Use esta pasta para auditar a qualidade da mídia sem precisar importar o baralho no Anki.
+
+
+***
