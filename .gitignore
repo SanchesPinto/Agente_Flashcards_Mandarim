@@ -2,6 +2,7 @@
 
 __pycache__/
 
-audios_temp/
+media_temp/*
 
-media_temp/
+.agents
+
