@@ -28,5 +28,5 @@ def get_language_config(language: str) -> dict:
         return LANGUAGE_CONFIG["mandarin"]
     idioma = language.strip().lower()
     if idioma not in LANGUAGE_CONFIG:
-        raise ValueError(f"Idioma nao suportado: {language}. Use 'mandarin' ou 'english'.")
+        raise ValueError(f"Idioma nao suportado: {language}. Use 'mandarin', 'french' ou 'english'.")
     return LANGUAGE_CONFIG[idioma]
